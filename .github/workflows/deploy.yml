@@ -34,17 +34,11 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
 
-    - name: Set start time
-      id: start_time
-      run: echo "::set-output name=timestamp::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-
-    - name: Set end time
-      id: end_time
-      run: echo "::set-output name=timestamp::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-
-    - name: Send test notification to Google Chat
-      if: always()
-      run: |
-        curl -X POST -H 'Content-Type: application/json' \
-          -d '{"text": "This is a test message from GitHub Actions."}' \
-          ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+       - name: Send Notification to Google Chat
+        env:
+          GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+        run: |
+          MESSAGE="Build and deploy completed successfully! The application is running at http://localhost:9090/hello"
+          curl -X POST -H 'Content-Type: application/json' \
+          -d "{\"text\": \"${MESSAGE}\"}" \
+          $GOOGLE_CHAT_WEBHOOK
