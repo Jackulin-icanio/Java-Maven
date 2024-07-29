@@ -43,6 +43,8 @@ jobs:
       run: echo "end_time=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
     - name: Send notification to Google Chat
+      env:
+        GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
       if: always()
       run: |
         curl -X POST -H 'Content-Type: application/json' \
@@ -56,4 +58,4 @@ jobs:
                         **Deployment Start Time:** ${{ env.start_time }}\n
                         **Deployment End Time:** ${{ env.end_time }}"
               }' \
-          ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          $GOOGLE_CHAT_WEBHOOK
