@@ -34,11 +34,12 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
 
-       - name: Send Notification to Google Chat
-        env:
-          GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
-        run: |
-          MESSAGE="Build and deploy completed successfully! The application is running at http://localhost:9090/hello"
-          curl -X POST -H 'Content-Type: application/json' \
-          -d "{\"text\": \"${MESSAGE}\"}" \
-          $GOOGLE_CHAT_WEBHOOK
+    - name: Send Notification to Google Chat
+      env:
+        GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+      run: |
+        MESSAGE="Build and deploy completed successfully! The application is running at http://localhost:9090/hello"
+        curl -X POST -H 'Content-Type: application/json' \
+        -d "{\"text\": \"${MESSAGE}\"}" \
+        $GOOGLE_CHAT_WEBHOOK
+        
