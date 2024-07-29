@@ -57,4 +57,4 @@ jobs:
                         **Deployment Start Time:** ${{ env.start_time }}\n
                         **Deployment End Time:** ${{ env.end_time }}"
               }' \
-          $GOOGLE_CHAT_WEBHOOK_URL
+          $GOOGLE_CHAT_WEBHOOK
