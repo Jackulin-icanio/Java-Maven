@@ -43,18 +43,19 @@ jobs:
       run: echo "end_time=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
     - name: Send notification to Google Chat
-      env: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+      env:
+        GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
       if: always()
       run: |
         curl -X POST -H 'Content-Type: application/json' \
           -d '{
                 "text": "Deployment Notification\n\n
-                        **Job:** ${{ job.name }}\n
-                        **Repo:** ${{ github.repository }}\n
-                        **Branch:** ${{ github.ref }}\n
-                        **Committed By:** ${{ github.actor }}\n
-                        **Commit Message:** ${{ github.event.head_commit.message }}\n
-                        **Deployment Start Time:** ${{ env.start_time }}\n
-                        **Deployment End Time:** ${{ env.end_time }}"
+                        **Job:** ${GITHUB_JOB}\n
+                        **Repo:** ${GITHUB_REPOSITORY}\n
+                        **Branch:** ${GITHUB_REF}\n
+                        **Committed By:** ${GITHUB_ACTOR}\n
+                        **Commit Message:** ${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}\n
+                        **Deployment Start Time:** ${START_TIME}\n
+                        **Deployment End Time:** ${END_TIME}"
               }' \
           $GOOGLE_CHAT_WEBHOOK
