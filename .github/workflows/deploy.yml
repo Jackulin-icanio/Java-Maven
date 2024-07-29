@@ -47,9 +47,8 @@ jobs:
         GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
       if: always()
       run: |
-        echo "Sending notification to Google Chat"
+        MESSAGE="Build and deploy completed successfully! The application is running at http://localhost:9090/hello"
         curl -X POST -H 'Content-Type: application/json' \
-          -d '{
-                "text": "Deployment Notification\n\n**Job:** ${{ github.job }}\n**Repo:** ${{ github.repository }}\n**Branch:** ${{ github.ref }}\n**Committed By:** ${{ github.actor }}\n**Commit Message:** ${{ github.event.head_commit.message }}\n**Deployment Start Time:** ${{ env.start_time }}\n**Deployment End Time:** ${{ env.end_time }}"
-              }' \
-          $GOOGLE_CHAT_WEBHOOK
+        -d "{\"text\": \"${MESSAGE}\"}" \
+        $GOOGLE_CHAT_WEBHOOK
+        
