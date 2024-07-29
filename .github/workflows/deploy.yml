@@ -33,3 +33,26 @@ jobs:
         docker build -t my-app:${{ github.sha }} .
       env:
         DOCKER_BUILDKIT: 1
+
+    - name: Send notification to Google Chat
+      if: always()  # Ensures this step runs even if previous steps fail
+      run: |
+        curl -X POST -H 'Content-Type: application/json' \
+          -d '{
+                "text": "Deployment Notification\n\n
+                        **Job:** ${{ job.name }}\n
+                        **Repo:** ${{ github.repository }}\n
+                        **Branch:** ${{ github.ref }}\n
+                        **Committed By:** ${{ github.actor }}\n
+                        **Commit Message:** ${{ github.event.head_commit.message }}\n
+                        **Deployment Start Time:** ${{ steps.start_time.outputs.timestamp }}\n
+                        **Deployment End Time:** ${{ steps.end_time.outputs.timestamp }}"
+              }' \
+          ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+    - name: Set start time
+      id: start_time
+      run: echo "::set-output name=timestamp::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+    - name: Set end time
+      id: end_time
+      run: echo "::set-output name=timestamp::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
