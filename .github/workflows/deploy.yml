@@ -42,7 +42,7 @@ jobs:
       run: |
         curl -X POST -H 'Content-Type: application/json' \
         -d '{
-        "text": "Deployment Started\nJob: '${{ github.job }}'\nRepo: '${{ github.repository }}'\nBranch: '${{ github.ref_name }}'\nCommited-By: '${{ github.actor }}'\nCommited-Message: '${{ github.event.head_commit.message }}'\nDeployment Start Time: '${{ start.time }}'\nDeployment End Time: '${{ end.time }}'"
+        "text": "Deployment Started\nJob: '${{ github.job }}'\nRepo: '${{ github.repository }}'\nBranch: '${{ github.ref_name }}'\nCommited-By: '${{ github.actor }}'\nCommited-Message: '${{ github.event.head_commit.message }}'"
         }' $GOOGLE_CHAT_WEBHOOK_URL
         
     - name: Set start time
