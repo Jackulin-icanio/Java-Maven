@@ -33,7 +33,7 @@ jobs:
         docker build -t my-app:${{ github.sha }} .
       env:
         DOCKER_BUILDKIT: 1
-
+        
     - name: Set start time
       id: start_time
       run: echo "start_time=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
