@@ -49,7 +49,7 @@ jobs:
                         **Deployment Start Time:** ${{ steps.start_time.outputs.timestamp }}\n
                         **Deployment End Time:** ${{ steps.end_time.outputs.timestamp }}"
               }' \
-          ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          ${{ secrets.GOOGLE_CHAT_WEBHOOK}}
     - name: Set start time
       id: start_time
       run: echo "::set-output name=timestamp::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
