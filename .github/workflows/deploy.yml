@@ -31,6 +31,8 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t my-app:${{ github.sha }} .
+      env:
+        DOCKER_BUILDKIT: 1
         
     - name: Set start time
       id: start_time
