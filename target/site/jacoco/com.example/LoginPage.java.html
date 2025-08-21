@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">simple-java-app</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">LoginPage.java</span></div><h1>LoginPage.java</h1><pre class="source lang-java linenums">package com.example;
+
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+
+/**
+ * LoginPage class represents a login page using Playwright for browser automation.
+ * This class provides methods to interact with login form elements and perform login operations.
+ */
+public class LoginPage {
+    private final Page page;
+    
+    // Locators for login page elements
+    private final Locator usernameField;
+    private final Locator passwordField;
+    private final Locator loginButton;
+    private final Locator errorMessage;
+    private final Locator successMessage;
+
+    /**
+     * Constructor to initialize the LoginPage with a Playwright Page object.
+     * 
+     * @param page The Playwright Page object representing the browser page
+     */
+<span class="fc" id="L25">    public LoginPage(Page page) {</span>
+<span class="fc" id="L26">        this.page = page;</span>
+<span class="fc" id="L27">        this.usernameField = page.locator(&quot;#username&quot;);</span>
+<span class="fc" id="L28">        this.passwordField = page.locator(&quot;#password&quot;);</span>
+<span class="fc" id="L29">        this.loginButton = page.locator(&quot;#loginButton&quot;);</span>
+<span class="fc" id="L30">        this.errorMessage = page.locator(&quot;#errorMessage&quot;);</span>
+<span class="fc" id="L31">        this.successMessage = page.locator(&quot;#successMessage&quot;);</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Navigate to the login page URL.
+     * 
+     * @param url The URL of the login page
+     */
+    public void navigateTo(String url) {
+<span class="fc" id="L40">        page.navigate(url);</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Enter username in the username field.
+     * 
+     * @param username The username to enter
+     */
+    public void enterUsername(String username) {
+<span class="fc bfc" id="L49" title="All 4 branches covered.">        if (username == null || username.trim().isEmpty()) {</span>
+<span class="fc" id="L50">            throw new IllegalArgumentException(&quot;Username cannot be null or empty&quot;);</span>
+        }
+<span class="fc" id="L52">        usernameField.clear();</span>
+<span class="fc" id="L53">        usernameField.fill(username);</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Enter password in the password field.
+     * 
+     * @param password The password to enter
+     */
+    public void enterPassword(String password) {
+<span class="fc bfc" id="L62" title="All 4 branches covered.">        if (password == null || password.trim().isEmpty()) {</span>
+<span class="fc" id="L63">            throw new IllegalArgumentException(&quot;Password cannot be null or empty&quot;);</span>
+        }
+<span class="fc" id="L65">        passwordField.clear();</span>
+<span class="fc" id="L66">        passwordField.fill(password);</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Click the login button to submit the form.
+     */
+    public void clickLoginButton() {
+<span class="fc" id="L73">        loginButton.click();</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Perform a complete login operation with username and password.
+     * 
+     * @param username The username for login
+     * @param password The password for login
+     */
+    public void login(String username, String password) {
+<span class="fc" id="L83">        enterUsername(username);</span>
+<span class="fc" id="L84">        enterPassword(password);</span>
+<span class="fc" id="L85">        clickLoginButton();</span>
+<span class="fc" id="L86">    }</span>
+
+    /**
+     * Check if the login was successful by looking for success message.
+     * 
+     * @return true if login was successful, false otherwise
+     */
+    public boolean isLoginSuccessful() {
+        try {
+<span class="fc" id="L95">            return successMessage.isVisible();</span>
+<span class="nc" id="L96">        } catch (Exception e) {</span>
+<span class="nc" id="L97">            return false;</span>
+        }
+    }
+
+    /**
+     * Check if there's an error message displayed.
+     * 
+     * @return true if error message is visible, false otherwise
+     */
+    public boolean hasErrorMessage() {
+        try {
+<span class="fc" id="L108">            return errorMessage.isVisible();</span>
+<span class="nc" id="L109">        } catch (Exception e) {</span>
+<span class="nc" id="L110">            return false;</span>
+        }
+    }
+
+    /**
+     * Get the text of the error message if present.
+     * 
+     * @return The error message text, or empty string if not present
+     */
+    public String getErrorMessage() {
+        try {
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (hasErrorMessage()) {</span>
+<span class="fc" id="L122">                return errorMessage.textContent();</span>
+            }
+<span class="nc" id="L124">        } catch (Exception e) {</span>
+            // Log error if needed
+<span class="fc" id="L126">        }</span>
+<span class="fc" id="L127">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Get the text of the success message if present.
+     * 
+     * @return The success message text, or empty string if not present
+     */
+    public String getSuccessMessage() {
+        try {
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            if (isLoginSuccessful()) {</span>
+<span class="fc" id="L138">                return successMessage.textContent();</span>
+            }
+<span class="nc" id="L140">        } catch (Exception e) {</span>
+            // Log error if needed
+<span class="fc" id="L142">        }</span>
+<span class="fc" id="L143">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Check if the username field is visible and enabled.
+     * 
+     * @return true if username field is ready for input, false otherwise
+     */
+    public boolean isUsernameFieldReady() {
+        try {
+<span class="pc bpc" id="L153" title="1 of 4 branches missed.">            return usernameField.isVisible() &amp;&amp; usernameField.isEnabled();</span>
+<span class="nc" id="L154">        } catch (Exception e) {</span>
+<span class="nc" id="L155">            return false;</span>
+        }
+    }
+
+    /**
+     * Check if the password field is visible and enabled.
+     * 
+     * @return true if password field is ready for input, false otherwise
+     */
+    public boolean isPasswordFieldReady() {
+        try {
+<span class="pc bpc" id="L166" title="1 of 4 branches missed.">            return passwordField.isVisible() &amp;&amp; passwordField.isEnabled();</span>
+<span class="nc" id="L167">        } catch (Exception e) {</span>
+<span class="nc" id="L168">            return false;</span>
+        }
+    }
+
+    /**
+     * Check if the login button is visible and enabled.
+     * 
+     * @return true if login button is ready to be clicked, false otherwise
+     */
+    public boolean isLoginButtonReady() {
+        try {
+<span class="pc bpc" id="L179" title="1 of 4 branches missed.">            return loginButton.isVisible() &amp;&amp; loginButton.isEnabled();</span>
+<span class="nc" id="L180">        } catch (Exception e) {</span>
+<span class="nc" id="L181">            return false;</span>
+        }
+    }
+
+    /**
+     * Get the current page title.
+     * 
+     * @return The page title
+     */
+    public String getPageTitle() {
+<span class="fc" id="L191">        return page.title();</span>
+    }
+
+    /**
+     * Get the current page URL.
+     * 
+     * @return The current URL
+     */
+    public String getCurrentUrl() {
+<span class="fc" id="L200">        return page.url();</span>
+    }
+
+    /**
+     * Wait for the page to load completely.
+     * 
+     * @param timeout Timeout in milliseconds
+     */
+    public void waitForPageLoad(int timeout) {
+<span class="fc" id="L209">        page.waitForLoadState(com.microsoft.playwright.options.LoadState.NETWORKIDLE, </span>
+<span class="fc" id="L210">                             new Page.WaitForLoadStateOptions().setTimeout(timeout));</span>
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * Clear all form fields.
+     */
+    public void clearFields() {
+<span class="fc" id="L217">        usernameField.clear();</span>
+<span class="fc" id="L218">        passwordField.clear();</span>
+<span class="fc" id="L219">    }</span>
+
+    /**
+     * Validate that all required form elements are present on the page.
+     * 
+     * @return true if all elements are present, false otherwise
+     */
+    public boolean validatePageElements() {
+        try {
+<span class="fc bfc" id="L228" title="All 2 branches covered.">            return usernameField.isVisible() &amp;&amp; </span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">                   passwordField.isVisible() &amp;&amp; </span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">                   loginButton.isVisible();</span>
+<span class="nc" id="L231">        } catch (Exception e) {</span>
+<span class="nc" id="L232">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
